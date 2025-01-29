@@ -1,26 +1,29 @@
 import streamlit as st
 import subprocess
+import json
 
-# Streamlit UI
-st.title("AI Development Crew Runner")
+st.title("CrewAI Runner")
 
-# Input form
-with st.form(key="crew_form"):
-    topic = st.text_input("Enter a topic for AI Development:", "AI LLMs")
-    submit_button = st.form_submit_button("Run Crew")
+# Input field for topic
+topic = st.text_input("Enter a topic:", "AI LLMs")
 
-# Handle form submission
-if submit_button:
-    try:
-        # Execute main.py with the user-provided topic
-        result = subprocess.run(
-            ["python", "src/latest_ai_development/main.py", "run", topic],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        st.success("Crew executed successfully!")
-        st.text_area("Output:", result.stdout, height=200)
-    except subprocess.CalledProcessError as e:
-        st.error("An error occurred while running the crew.")
-        st.text_area("Error Details:", e.stderr, height=200)
+if st.button("Run CrewAI"):
+    with st.spinner("Running CrewAI..."):
+        try:
+            # Run `main.py` and capture JSON output
+            result = subprocess.run(
+                ["python", "src/latest_ai_development/main.py", "run", topic],
+                capture_output=True, text=True
+            )
+
+            # Parse JSON output
+            output = json.loads(result.stdout.strip()) if result.stdout else {}
+
+            if output.get("success"):
+                st.subheader("CrewAI Output:")
+                st.text_area("Result", output["result"], height=300)
+            else:
+                st.error(f"Error: {output.get('error', 'Unknown error')}")
+
+        except Exception as e:
+            st.error(f"An error occurred: {e}")

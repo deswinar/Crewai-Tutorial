@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 import warnings
+import json
 
 from datetime import datetime
 
@@ -25,8 +26,10 @@ def run():
     }
     
     try:
-        LatestAiDevelopment().crew().kickoff(inputs=inputs)
+        result = LatestAiDevelopment().crew().kickoff(inputs=inputs)
+        print(json.dumps({"success": True, "result": result}))  # <-- Print JSON output
     except Exception as e:
+        print(json.dumps({"success": False, "error": str(e)}))  # <-- Print error as JSON
         raise Exception(f"An error occurred while running the crew: {e}")
 
 
