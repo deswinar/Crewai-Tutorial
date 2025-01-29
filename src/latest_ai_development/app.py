@@ -1,6 +1,6 @@
 import streamlit as st
-import subprocess
 import json
+from src.latest_ai_development.main import run_crew  # Import the new function
 
 st.title("CrewAI Runner")
 
@@ -10,14 +10,8 @@ topic = st.text_input("Enter a topic:", "AI LLMs")
 if st.button("Run CrewAI"):
     with st.spinner("Running CrewAI..."):
         try:
-            # Run `main.py` and capture JSON output
-            result = subprocess.run(
-                ["python", "src/latest_ai_development/main.py", "run", topic],
-                capture_output=True, text=True
-            )
-
-            # Parse JSON output
-            output = json.loads(result.stdout.strip()) if result.stdout else {}
+            # Call the run_crew function directly
+            output = run_crew(topic)
 
             if output.get("success"):
                 st.subheader("CrewAI Output:")

@@ -14,23 +14,20 @@ warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 # Replace with inputs you want to test with, it will automatically
 # interpolate any tasks and agents information
 
-def run():
+def run_crew(topic="AI LLMs"):
     """
-    Run the crew.
+    Run the CrewAI and return the result.
     """
-    # Check if a topic is provided via command line, otherwise use default
-    topic = sys.argv[2] if len(sys.argv) > 2 else "AI LLMs"
     inputs = {
         'topic': topic,
         'current_year': str(datetime.now().year)
     }
-    
+
     try:
         result = LatestAiDevelopment().crew().kickoff(inputs=inputs)
-        print(json.dumps({"success": True, "result": result}))  # <-- Print JSON output
+        return {"success": True, "result": result}  # Return the result
     except Exception as e:
-        print(json.dumps({"success": False, "error": str(e)}))  # <-- Print error as JSON
-        raise Exception(f"An error occurred while running the crew: {e}")
+        return {"success": False, "error": str(e)}  # Return error message
 
 
 def train():
@@ -77,13 +74,6 @@ if __name__ == "__main__":
     command = sys.argv[1].lower()
 
     if command == "run":
-        run()
-    elif command == "train":
-        train()
-    elif command == "replay":
-        replay()
-    elif command == "test":
-        test()
-    else:
-        print(f"Unknown command: {command}")
-        sys.exit(1)
+        topic = sys.argv[2] if len(sys.argv) > 2 else "AI LLMs"
+        output = run_crew(topic)  # Call the new function
+        print(json.dumps(output))  # Print the result as JSON
