@@ -1,10 +1,7 @@
 #!/usr/bin/env python
-try:
-    __import__('pysqlite3')
-except ImportError:
-    import sqlite3  # Fallback for local dev or if SQLite is available natively
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+# __import__('pysqlite3')
+# import sys
+# sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 import sys
 import warnings
