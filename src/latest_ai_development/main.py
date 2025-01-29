@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 import sys
 import warnings
 import json
