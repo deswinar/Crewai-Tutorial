@@ -17,8 +17,10 @@ def run():
     """
     Run the crew.
     """
+    # Check if a topic is provided via command line, otherwise use default
+    topic = sys.argv[2] if len(sys.argv) > 2 else "AI LLMs"
     inputs = {
-        'topic': 'AI LLMs',
+        'topic': topic,
         'current_year': str(datetime.now().year)
     }
     
@@ -63,3 +65,22 @@ def test():
 
     except Exception as e:
         raise Exception(f"An error occurred while testing the crew: {e}")
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: python main.py <command> [arguments]")
+        sys.exit(1)
+
+    command = sys.argv[1].lower()
+
+    if command == "run":
+        run()
+    elif command == "train":
+        train()
+    elif command == "replay":
+        replay()
+    elif command == "test":
+        test()
+    else:
+        print(f"Unknown command: {command}")
+        sys.exit(1)
