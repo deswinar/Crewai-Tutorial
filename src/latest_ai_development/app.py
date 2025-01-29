@@ -1,6 +1,6 @@
 import streamlit as st
 import json
-from src.latest_ai_development.main import run_crew  # Import the new function
+from latest_ai_development.main import run_crew  # Import the new function
 
 st.title("CrewAI Runner")
 
